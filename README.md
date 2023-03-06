@@ -1,12 +1,12 @@
 # Linebot-Openai
 這是一個串接 OpenAI GPT-3.5 API 與 Line 的聊天機器人，可連續對話並儲存設定。不論是想獲得一隻機器貓貓或體驗一下被渣的感覺，AI 都能實現你的願望！可使用以下指令：
-- "/Command" 叫出指令選單、查看目前設定檔
-- "/Setting: 設定描述" 設定 AI 角色或功能
-- "/Save: 設定檔名稱" 儲存當前設定
-- "/Read: 設定檔名稱" 讀取指定設定檔 
-- "/Delete: 設定檔名稱" 刪除指定設定檔 
+- "/command" 叫出指令選單、查看目前設定檔
+- "/set: 設定描述" 設定 AI 角色或功能
+- "/save: 設定檔名稱" 儲存當前設定
+- "/read: 設定檔名稱" 讀取指定設定檔 
+- "/delete: 設定檔名稱" 刪除指定設定檔 
 
-![image](/public/images/linebot-openai-02.png)
+![image](/public/images/linebot-openai-03.png)
 
 ## Preparation
 - 建立 OpenAI 帳戶，取得 API KEY
