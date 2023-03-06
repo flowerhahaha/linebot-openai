@@ -7,21 +7,38 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration)
 
 const MAX_MESSAGES_LENGTH = 10
+const settings = {}
 let messages = []
+
 const chatGPT = async (userInput) => {
-  // Check if the user needs to reset AI
-  const match = userInput.match(/^Setting: (.+)/i)
-  if (match) {
-    messages = [{role: "user", content:`${match[1]}`}]
-  } else {
+  const match = userInput.match(/^\/(Setting|Save|Read|Delete): (.+)/i)
+  if (!match) {
     messages.push({role: "user", content:`${userInput}`})
+  } else if (match[1] === 'Setting') {
+    messages = [{role: "user", content:`${match[2]}`}]
+    return `已設定角色：${match[2]}`
+  } else if (match[1] === 'Save') {
+    settings[match[2]] = messages
+    return `已儲存您的設定：${match[2]}`
+  } else if (match[1] === 'Read') {
+    if (settings[match[2]]) {
+      messages = settings[match[2]]
+      return `已切換至設定檔：${match[2]}`
+    }
+    return `查無設定檔：${match[2]}`
+  } else if (match[1] === 'Delete') {
+    if (settings[match[2]]) {
+      delete settings[match[2]]
+      console.log('deleteSetting:', settings)
+      return `已刪除設定檔：${match[2]}`
+    }
+    return `查無設定檔：${match[2]}`
   }
   // If the length of the conversation exceeds 10 messages, delete the earliest message after the setting.
   if (messages.length > MAX_MESSAGES_LENGTH) {
     messages.splice(1, 1)
   }
 
-  console.log('messages:', messages)
   try {
     const completion = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
@@ -37,6 +54,11 @@ const chatGPT = async (userInput) => {
   }
 }
 
+const getSettings = () => {
+  return settings
+}
+
 module.exports = {
-  chatGPT
+  chatGPT,
+  getSettings
 }
