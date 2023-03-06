@@ -6,21 +6,39 @@ const config = {
 }
 const client = new line.Client(config)
 const openai = require('./openai')
+const lineMessageConfig = require('./line-message-config')
 
 const middleware = line.middleware(config)
 
 // Handles an incoming LINE Messaging API event
 const handleEvent = async (event) =>{
-  console.log('event:', event)
-  if (event.type !== 'message' || event.message.type !== 'text') {
-    return Promise.resolve(null)
-  } 
-  const message = {
-    type: 'text',
-    text: await openai.chatGPT(event.message.text)
+  if (event.type === 'postback') {
+    const postbackData = event.postback.data;
+    if (postbackData === 'action=set_role') {
+      return client.replyMessage(event.replyToken, lineMessageConfig.postbackMessage.SetRole)
+    } else if (postbackData === 'action=save_role') {
+      return client.replyMessage(event.replyToken, lineMessageConfig.postbackMessage.SaveRole)
+    } else if (postbackData === 'action=read_role') {
+      return client.replyMessage(event.replyToken, lineMessageConfig.postbackMessage.ReadRole())
+    } else if (postbackData === 'action=delete_role') {
+      return client.replyMessage(event.replyToken, lineMessageConfig.postbackMessage.DeleteRole())
+    }
   }
-  // Sends the generated message back to the user through the LINE Messaging API (asynchronous event)
-  return client.replyMessage(event.replyToken, message)
+
+  if (event.message.text === '/Command') {
+    return client.replyMessage(event.replyToken, lineMessageConfig.flexMessage)
+  }
+
+  if (event.type === 'message' && event.message.type === 'text') {
+    const openaiMessage = {
+      type: 'text',
+      text: await openai.chatGPT(event.message.text)
+    }
+    // Sends the generated message back to the user through the LINE Messaging API (asynchronous event)
+    return client.replyMessage(event.replyToken, openaiMessage)
+  } 
+
+  return Promise.resolve(null)
 }
 
 module.exports = {
