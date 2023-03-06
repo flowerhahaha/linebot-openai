@@ -6,7 +6,7 @@ const configuration = new Configuration({
 })
 const openai = new OpenAIApi(configuration)
 
-const MAX_MESSAGES_LENGTH = 10
+const MAX_PROMPT_LENGTH = 3600
 const settings = {}
 let messages = []
 
@@ -33,10 +33,7 @@ const chatGPT = async (userInput) => {
     }
     return `查無設定檔：${match[2]}`
   }
-  // If the length of the conversation exceeds 10 messages, delete the earliest message after the setting.
-  if (messages.length > MAX_MESSAGES_LENGTH) {
-    messages.splice(1, 1)
-  }
+
   try {
     const completion = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
@@ -44,6 +41,10 @@ const chatGPT = async (userInput) => {
     })
     // Clean up the text and translate simplified Chinese to traditional
     const text = chineseConv.tify(completion.data.choices[0].message.content.trim().replace(/^[\n,.;:?!，。；：？！]+/, ''))
+    // If the length of the conversation exceeds 3600 tokens, delete the earliest message after setting.
+    if (completion.data.usage.total_tokens > MAX_PROMPT_LENGTH) {
+      messages.splice(1, 1)
+    } 
     // Save response records for continuous conversation
     messages.push({role: "system", content:`${text}`})
     return text
