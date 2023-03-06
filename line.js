@@ -25,7 +25,7 @@ const handleEvent = async (event) =>{
     }
   }
 
-  if (event.message.text === '/Command') {
+  if (event.message.text.toLowerCase() === '/command') {
     return client.replyMessage(event.replyToken, lineMessageConfig.flexMessage)
   }
 

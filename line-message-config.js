@@ -68,18 +68,18 @@ const flexMessage = {
 const postbackMessage = {
   SetRole: {
     type: 'text', 
-    text: '請輸入 “/Setting: 您的設定” 來設定 AI 功能與角色。例如：\n/Setting: 你現在是專業的中翻英翻譯人員，請自動將我輸入的中文翻譯成英文。'
+    text: '請輸入 “/set: 您的設定” 來設定 AI 功能與角色。例如：\n/set: 你現在是專業的中翻英翻譯人員，請自動將我輸入的中文翻譯成英文。'
   },
   SaveRole: {
     type: 'text', 
-    text: '請輸入 “/Save: 設定檔名稱” 來儲存設定。例如：\n/Save: ChToEn'
+    text: '請輸入 “/save: 設定檔名稱” 來儲存設定。例如：\n/save: ChToEn'
   },
   ReadRole: () => {
     const settings = getSettings()
     const settingsName = Object.keys(settings).join(', ')
     return {
       type: 'text', 
-      text: `請輸入 “/Read: 設定檔名稱” 來讀取設定。例如：\n/Read: ChToEn\n以下是您目前儲存的設定檔：${JSON.stringify(settingsName)}`
+      text: `請輸入 “/read: 設定檔名稱” 來讀取設定。例如：\n/read: ChToEn\n以下是您目前儲存的設定檔：${JSON.stringify(settingsName)}`
     }
   },
   DeleteRole: () => {
@@ -87,7 +87,7 @@ const postbackMessage = {
     const settingsName = Object.keys(settings).join(', ')
     return {
       type: 'text', 
-      text: `請輸入 “/Delete: 設定檔名稱” 來刪除設定。例如：\n/Delete: ChToEn\n以下是您目前儲存的設定檔：${JSON.stringify(settingsName)}`
+      text: `請輸入 “/delete: 設定檔名稱” 來刪除設定。例如：\n/delete: ChToEn\n以下是您目前儲存的設定檔：${JSON.stringify(settingsName)}`
     }
   },
 }

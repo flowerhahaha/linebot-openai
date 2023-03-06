@@ -11,25 +11,24 @@ const settings = {}
 let messages = []
 
 const chatGPT = async (userInput) => {
-  const match = userInput.match(/^\/(Setting|Save|Read|Delete): (.+)/i)
+  const match = userInput.toLowerCase().match(/^\/(set|save|read|delete): (.+)/)
   if (!match) {
     messages.push({role: "user", content:`${userInput}`})
-  } else if (match[1] === 'Setting') {
+  } else if (match[1] === 'set') {
     messages = [{role: "user", content:`${match[2]}`}]
     return `已設定角色：${match[2]}`
-  } else if (match[1] === 'Save') {
+  } else if (match[1] === 'save') {
     settings[match[2]] = messages
     return `已儲存您的設定：${match[2]}`
-  } else if (match[1] === 'Read') {
+  } else if (match[1] === 'read') {
     if (settings[match[2]]) {
       messages = settings[match[2]]
       return `已切換至設定檔：${match[2]}`
     }
     return `查無設定檔：${match[2]}`
-  } else if (match[1] === 'Delete') {
+  } else if (match[1] === 'delete') {
     if (settings[match[2]]) {
       delete settings[match[2]]
-      console.log('deleteSetting:', settings)
       return `已刪除設定檔：${match[2]}`
     }
     return `查無設定檔：${match[2]}`
@@ -38,7 +37,6 @@ const chatGPT = async (userInput) => {
   if (messages.length > MAX_MESSAGES_LENGTH) {
     messages.splice(1, 1)
   }
-
   try {
     const completion = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
