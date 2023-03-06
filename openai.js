@@ -53,11 +53,7 @@ const chatGPT = async (userInput) => {
   }
 }
 
-const getSettings = () => {
-  return settings
-}
-
 module.exports = {
   chatGPT,
-  getSettings
+  settings
 }

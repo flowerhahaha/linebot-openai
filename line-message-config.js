@@ -1,4 +1,4 @@
-const { getSettings } = require('./openai')
+const { settings } = require('./openai')
 
 const flexMessage = {
   type: 'flex',
@@ -75,19 +75,17 @@ const postbackMessage = {
     text: '請輸入 “/save: 設定檔名稱” 來儲存設定。例如：\n/save: ChToEn'
   },
   ReadRole: () => {
-    const settings = getSettings()
     const settingsName = Object.keys(settings).join(', ')
     return {
       type: 'text', 
-      text: `請輸入 “/read: 設定檔名稱” 來讀取設定。例如：\n/read: ChToEn\n以下是您目前儲存的設定檔：${JSON.stringify(settingsName)}`
+      text: `請輸入 “/read: 設定檔名稱” 來讀取設定。例如：\n/read: ChToEn\n以下是您目前儲存的設定檔：${settingsName}`
     }
   },
   DeleteRole: () => {
-    const settings = getSettings()
     const settingsName = Object.keys(settings).join(', ')
     return {
       type: 'text', 
-      text: `請輸入 “/delete: 設定檔名稱” 來刪除設定。例如：\n/delete: ChToEn\n以下是您目前儲存的設定檔：${JSON.stringify(settingsName)}`
+      text: `請輸入 “/delete: 設定檔名稱” 來刪除設定。例如：\n/delete: ChToEn\n以下是您目前儲存的設定檔：${settingsName}`
     }
   },
 }
