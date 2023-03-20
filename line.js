@@ -34,24 +34,29 @@ const handleEvent = async (event) => {
       audioStream.pipe(writeStream);
 
       writeStream.on("finish", async () => {
-        const recognizedText = await azureSpeech.speechToText(audioFilePath);
-        fs.unlinkSync(audioFilePath); // Remove temporary audio file
-
-        const textResponse = await openai.chatGPT(recognizedText);
-        const audioFilePath = await azureTTS.textToSpeech(textResponse);
-
-        const audioMessage = {
-          type: "audio",
-          originalContentUrl: audioFilePath,
-          duration: 60000
-        };
-
-        return client.replyMessage(event.replyToken, audioMessage);
+        try {
+          const recognizedText = await azureSpeech.speechToText(audioFilePath);
+          fs.unlinkSync(audioFilePath); // Remove temporary audio file
+      
+          const textResponse = await openai.chatGPT(recognizedText);
+          const audioResponsePath = await azureTTS.textToSpeech(textResponse);
+      
+          const audioMessage = {
+            type: "audio",
+            originalContentUrl: audioResponsePath,
+            duration: 60000
+          };
+      
+          return client.replyMessage(event.replyToken, audioMessage);
+        } catch (error) {
+          console.error("Error processing audio:", error);
+        }
       });
-
+      
       writeStream.on("error", (error) => {
         console.error("Error writing audio file:", error);
       });
+      
     }
   }
 
