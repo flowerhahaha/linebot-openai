@@ -4,7 +4,9 @@ const { SpeechConfig, AudioConfig, SpeechSynthesizer, SpeechSynthesisOutputForma
 const { BlobServiceClient, StorageSharedKeyCredential } = require('@azure/storage-blob');
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
-const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
+const ffmpegPath = process.env.NODE_ENV === 'production'
+  ? path.join(__dirname, 'ffmpeg', 'ffmpeg')
+  : require('@ffmpeg-installer/ffmpeg').path;
 
 
 const subscriptionKey = 'e33585f4decc46958be421161f45e15e';
