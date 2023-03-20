@@ -7,7 +7,7 @@ const exec = util.promisify(require('child_process').exec);
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 
 
-const subscriptionKey = '4d28ad01f3214b8aa96e0a757c111a0b';
+const subscriptionKey = 'e33585f4decc46958be421161f45e15e';
 const serviceRegion = 'eastus';
 const accountName = 'jolin';
 const accountKey = 'dolnR3xkXS4OprvKSOV2chiqrewUJYmIDZQO2pgGSYjhdBoGHogg7f4zcFCIEI6n+jdCTVK8UGbD+AStA2+KSg==';
