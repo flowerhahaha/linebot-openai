@@ -1,4 +1,7 @@
 // Set line bot config 
+const azureTTS = require('./azure-tts');
+const fs = require('fs');
+const path = require('path');
 const line = require('@line/bot-sdk')
 const config = {
   channelAccessToken: process.env.channelAccessToken,
@@ -30,13 +33,18 @@ const handleEvent = async (event) =>{
   }
 
   if (event.type === 'message' && event.message.type === 'text') {
-    const openaiMessage = {
-      type: 'text',
-      text: await openai.chatGPT(event.message.text)
-    }
-    // Sends the generated message back to the user through the LINE Messaging API (asynchronous event)
-    return client.replyMessage(event.replyToken, openaiMessage)
-  } 
+    const textResponse = await openai.chatGPT(event.message.text);
+    const audioFilePath = await azureTTS.textToSpeech(textResponse);
+  
+    const audioMessage = {
+      type: 'audio',
+      originalContentUrl: audioFilePath,
+      duration: 60000
+    };
+  
+    return client.replyMessage(event.replyToken, audioMessage);
+  }
+  
 
   return Promise.resolve(null)
 }
