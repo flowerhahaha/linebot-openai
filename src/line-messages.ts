@@ -1,6 +1,7 @@
-const { settings } = require('./openai')
+import { FlexMessage, TextMessage } from '@line/bot-sdk'
+import { settings } from './chat-gpt-handler'
 
-const flexMessage = {
+export const flexMessage: FlexMessage = {
   type: 'flex',
   altText: '選單',
   contents: {
@@ -65,7 +66,14 @@ const flexMessage = {
   },
 }
 
-const postbackMessage = {
+interface PostbackMessage {
+  SetRole: TextMessage
+  SaveRole: TextMessage
+  ReadRole: () => TextMessage
+  DeleteRole: () => TextMessage
+}
+
+export const postbackMessage: PostbackMessage = {
   SetRole: {
     type: 'text', 
     text: '請輸入 “/set: 您的設定” 來設定 AI 功能與角色。例如：\n/set: 你現在是專業的中翻英翻譯人員，請自動將我輸入的中文翻譯成英文。'
@@ -88,9 +96,4 @@ const postbackMessage = {
       text: `請輸入 “/delete: 設定檔名稱” 來刪除設定。例如：\n/delete: ChToEn\n以下是您目前儲存的設定檔：${settingsName}`
     }
   },
-}
-
-module.exports = {
-  flexMessage,
-  postbackMessage
 }
