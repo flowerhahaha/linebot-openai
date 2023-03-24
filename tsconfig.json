@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS", // 指定生成哪個模組系統代碼
+    "target": "ES6", 
+    "esModuleInterop": true, // 允許 es6 模組與 commonjs 模組互相調用
+    "strict": true, // 啟用所有嚴格類型檢查選項
+    "noEmitOnError": true, // 編譯錯誤時不生成 js 文件
+    "rootDir": "./src", 
+    "outDir": "./dist",
+  },
+  "include": ["./src"] // 只編譯 src 目錄內的 ts 文件
+}
