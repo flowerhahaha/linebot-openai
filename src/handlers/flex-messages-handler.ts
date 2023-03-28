@@ -1,5 +1,4 @@
-import { FlexMessage, TextMessage } from '@line/bot-sdk'
-import { settings } from './chat-gpt-handler'
+import { FlexMessage } from '@line/bot-sdk'
 
 export const flexMessage: FlexMessage = {
   type: 'flex',
@@ -63,37 +62,5 @@ export const flexMessage: FlexMessage = {
         },
       ],
     },
-  },
-}
-
-interface PostbackMessage {
-  SetRole: TextMessage
-  SaveRole: TextMessage
-  ReadRole: () => TextMessage
-  DeleteRole: () => TextMessage
-}
-
-export const postbackMessage: PostbackMessage = {
-  SetRole: {
-    type: 'text', 
-    text: '請輸入 “/set: 您的設定” 來設定 AI 功能與角色。例如：\n/set: 你現在是專業的中翻英翻譯人員，請自動將我輸入的中文翻譯成英文。'
-  },
-  SaveRole: {
-    type: 'text', 
-    text: '請輸入 “/save: 設定檔名稱” 來儲存設定。例如：\n/save: ChToEn'
-  },
-  ReadRole: () => {
-    const settingsName = Object.keys(settings).join(', ')
-    return {
-      type: 'text', 
-      text: `請輸入 “/read: 設定檔名稱” 來讀取設定。例如：\n/read: ChToEn\n以下是您目前儲存的設定檔：${settingsName}`
-    }
-  },
-  DeleteRole: () => {
-    const settingsName = Object.keys(settings).join(', ')
-    return {
-      type: 'text', 
-      text: `請輸入 “/delete: 設定檔名稱” 來刪除設定。例如：\n/delete: ChToEn\n以下是您目前儲存的設定檔：${settingsName}`
-    }
   },
 }

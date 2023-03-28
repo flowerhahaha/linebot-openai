@@ -4,7 +4,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 import express, { Request, Response, Application } from 'express'
 import { lineMiddleware } from './line-middleware'
-import { handleEvent } from './line-event-handler'
+import { handleEvent } from './handlers/line-event-handler'
 require('./config/mongoose')
 
 const app: Application = express()
