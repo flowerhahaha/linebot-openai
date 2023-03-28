@@ -19,6 +19,7 @@ if (process.env.NODE_ENV !== 'production') {
 const express_1 = __importDefault(require("express"));
 const line_middleware_1 = require("./line-middleware");
 const line_event_handler_1 = require("./line-event-handler");
+require('./config/mongoose');
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 3000;
 // Router for receive and reply message 
